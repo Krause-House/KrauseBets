@@ -19,7 +19,7 @@ module.exports = {
             .setRequired(true)
             .setDescription("Team to bet on (using name in /odds)")
         )
-        .addStringOption((option) =>
+        .addIntegerOption((option) =>
           option
             .setName("amount")
             .setRequired(true)

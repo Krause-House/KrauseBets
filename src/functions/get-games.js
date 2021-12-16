@@ -2,6 +2,7 @@ const oddsApi = require("./odds-api");
 const getTeamAbbreviation = require("./get-team-abbreviation");
 const { oddsApiKey } = require("../config.json");
 const { setGame } = require("../data/games");
+const { isWithinHours } = require("../util/dates");
 
 const getSpread = (markets) => {
   const spreads = markets.filter((market) => market.key === "spreads")[0];
@@ -26,6 +27,13 @@ async function getGames() {
   try {
     await await Promise.all(
       response.map(async (dirtyGame) => {
+        if (!isWithinHours(new Date(dirtyGame.commence_time), 12)) {
+          console.log(
+            "skipping game " + dirtyGame.home_team + " " + dirtyGame.away_team
+          );
+          return; // Only get games within 12 hours from now
+        }
+
         const newGame = {
           home: getTeamAbbreviation(dirtyGame.home_team),
           away: getTeamAbbreviation(dirtyGame.away_team),
@@ -38,7 +46,6 @@ async function getGames() {
           newGame.odds = {
             spread: spread,
           };
-          // TO DO: only show games for TONIGHT
           games.push(newGame);
         }
         return;

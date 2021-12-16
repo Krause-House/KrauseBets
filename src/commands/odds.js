@@ -8,14 +8,14 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("spread")
-        .setDescription("Bet against the spread for a game.")
+        .setDescription("Bet on a team with a handicap for projected score.")
     ),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
     getGames().then(async (games) => {
       var reply = "**Tonight's Spread Odds**\n";
       if (games.length == 0) {
-        reply = "No games have spread odds.";
+        reply = "No upcoming games for tonight found.";
       } else {
         games.map((game) => {
           reply += `
