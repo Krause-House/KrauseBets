@@ -73,7 +73,7 @@ module.exports = {
     });
 
     await interaction.followUp(
-      `${user} has placed a $K${amount} spread bet on ${team} (${
+      `${user} has placed a ${amount} spread bet on ${team} (${
         bet.odds.point >= 0 ? "+" : ""
       }${bet.odds.point}).`
     );
