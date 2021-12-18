@@ -12,7 +12,11 @@ const setGame = async (game) => {
     console.log("Successfully connected to MongoDB.");
     const collection = client.db("betting").collection("games");
 
-    const filter = game; // won't insert if already exists
+    const filter = {
+      home: game.home,
+      away: game.away,
+      datetime: game.datetime,
+    }; // won't insert if already exists
     const options = { upsert: true };
     const update = {
       $set: game,
