@@ -28,9 +28,6 @@ async function getGames() {
     await await Promise.all(
       response.map(async (dirtyGame) => {
         if (!isWithinHours(new Date(dirtyGame.commence_time), 12)) {
-          console.log(
-            "skipping game " + dirtyGame.home_team + " " + dirtyGame.away_team
-          );
           return; // Only get games within 12 hours from now
         }
 
@@ -39,7 +36,7 @@ async function getGames() {
           away: getTeamAbbreviation(dirtyGame.away_team),
           datetime: new Date(dirtyGame.commence_time),
         };
-        await setGame(newGame); // this is a side effect. side effects are bad.
+        setGame(newGame); // this is a side effect. side effects are bad.
 
         const spread = getSpread(dirtyGame.bookmakers[0].markets);
         if (spread) {
