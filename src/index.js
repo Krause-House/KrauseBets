@@ -1,6 +1,16 @@
 const fs = require("fs");
+const http = require("http");
 const { Client, Collection, Intents } = require("discord.js");
-const { token } = require("./config.json");
+const { token, port, host } = require("./config.json");
+
+const requestListener = function (req, res) {
+  res.writeHead(200);
+  res.end("KrauseBot is running!");
+};
+const server = http.createServer(requestListener);
+server.listen(port, host, () => {
+  console.log(`Server is running on http://${host}:${port}`);
+});
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
