@@ -1,1 +1,8 @@
 runtime: nodejs16
+
+env_variables:
+  clientId: "911410076412158002"
+  guildId: "847583837491167273"
+  token: "OTExNDEwMDc2NDEyMTU4MDAy.YZg-xw.g3zvCQPn8xRRrzBv0-mA09nQC8I"
+  mongoConnectionString: "mongodb+srv://greg:QbiMKre4btRPiYBQ@krausehouse.xz2l2.mongodb.net/?retryWrites=true&w=majority"
+  oddsApiKey: "c000219bb1c6f9862fe1af5209757cff"
