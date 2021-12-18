@@ -2,7 +2,6 @@ const fs = require("fs");
 const http = require("http");
 const { Client, Collection, Intents } = require("discord.js");
 const { token, port, host, firebaseKey } = require("./config.json");
-const { initializeApp } = require("firebase/app");
 
 const requestListener = function (req, res) {
   res.writeHead(200);
