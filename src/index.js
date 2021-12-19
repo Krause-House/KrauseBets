@@ -1,7 +1,8 @@
 const fs = require("fs");
 const http = require("http");
 const { Client, Collection, Intents } = require("discord.js");
-const { token, port, host, firebaseKey } = require("./config.json");
+const newProposal = require("./actions/new-proposal");
+const { token, port, host, proposalChannels } = require("./config.json");
 
 const requestListener = function (req, res) {
   res.writeHead(200);
@@ -12,7 +13,13 @@ server.listen(port, host, () => {
   console.log(`Server is running on http://${host}:${port}`);
 });
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+  ],
+});
 
 client.commands = new Collection();
 const commandFiles = fs
@@ -30,8 +37,10 @@ client.once("ready", () => {
   console.log("Ready!");
 });
 
-client.on("message", (message) => {
-  console.log(message.content);
+client.on("messageCreate", (message) => {
+  if (proposalChannels.includes(message.channel.id)) {
+    newProposal(client, message);
+  }
 });
 
 client.on("interactionCreate", async (interaction) => {
