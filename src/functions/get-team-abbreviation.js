@@ -1,41 +1,43 @@
 const teams = {
-  "Atlanta Hawks": "ATL",
-  "Boston Celtics": "BOS",
-  "Brooklyn Nets": "BKN",
-  "Charlotte Hornets": "CHA",
-  "Chicago Bulls": "CHI",
-  "Cleveland Cavaliers": "CLE",
-  "Dallas Mavericks": "DAL",
-  "Denver Nuggets": "DEN",
-  "Detroit Pistons": "DET",
-  "Golden State Warriors": "GSW",
-  "Houston Rockets": "HOU",
-  "Indiana Pacers": "IND",
-  "Los Angeles Clippers": "LAC",
-  "Los Angeles Lakers": "LAL",
-  "Memphis Grizzlies": "MEM",
-  "Miami Heat": "MIA",
-  "Milwaukee Bucks": "MIL",
-  "Minnesota Timberwolves": "MIN",
-  "New Orleans Pelicans": "NOP",
-  "New York Knicks": "NYK",
-  "Oklahoma City Thunder": "OKC",
-  "Orlando Magic": "ORL",
-  "Philadelphia 76ers": "PHI",
-  "Phoenix Suns": "PHO",
-  "Portland Trail Blazers": "POR",
-  "Sacramento Kings": "SAC",
-  "San Antonio Spurs": "SAS",
-  "Toronto Raptors": "TOR",
-  "Utah Jazz": "UTA",
-  "Washington Wizards": "WAS",
+  ATL: ["atlanta hawks", "hawks", "atl", "atlanta"],
+  BOS: ["boston celtics", "celtics", "boston", "bos"],
+  BKN: ["brooklyn nets", "nets", "bkn", "brooklyn"],
+  CHA: ["charlotte hornets", "hornets", "cha", "charlotte"],
+  CHI: ["chicago bulls", "bulls", "chi", "chicago"],
+  CLE: ["cleveland cavaliers", "cavaliers", "cle", "cleveland", "cavs"],
+  DAL: ["dallas mavericks", "mavericks", "dallas", "dallas mavs", "mavs"],
+  DEN: ["denver nuggets", "nuggets", "den", "denver", "nugs"],
+  DET: ["detroit pistons", "pistons", "det", "detroit"],
+  GSW: ["golden state warriors", "warriors", "gsw", "golden state", "warrior"],
+  HOU: ["houston rockets", "rockets", "hou", "houston"],
+  IND: ["indiana pacers", "pacers", "ind", "indiana"],
+  LAC: ["los angeles clippers", "clippers", "lac"],
+  LAL: ["los angeles lakers", "lakers", "lal"],
+  MEM: ["memphis grizzlies", "grizzlies", "mem", "memphis"],
+  MIA: ["miami heat", "heat", "mia", "miami"],
+  MIL: ["milwaukee bucks", "bucks", "mil", "milwaukee", "mke"],
+  MIN: ["minnesota timberwolves", "timberwolves", "min", "minnesota"],
+  NOP: ["new orleans pelicans", "pelicans", "nop", "new orleans", "nola"],
+  NYK: ["new york knicks", "knicks", "nyk", "new york"],
+  OKC: ["oklahoma city thunder", "thunder", "okc", "oklahoma city"],
+  ORL: ["orlando magic", "magic", "orl", "orlando"],
+  PHI: ["philadelphia 76ers", "76ers", "phi", "philadelphia"],
+  PHX: ["phoenix suns", "suns", "phx", "phoenix"],
+  POR: ["portland trail blazers", "trail blazers", "por", "portland"],
+  SAC: ["sacramento kings", "kings", "sac", "sacramento"],
+  SAS: ["san antonio spurs", "spurs", "sas", "san antonio"],
+  TOR: ["toronto raptors", "raptors", "tor", "toronto"],
+  UTA: ["utah jazz", "jazz", "uta", "utah", "uth"],
+  WAS: ["washington wizards", "wizards", "was", "washington"],
 };
 
 function getTeamAbbreviation(teamName) {
-  if (!Object.keys(teams).includes(teamName)) {
-    return "UNK";
+  for (let team in teams) {
+    if (teams[team].includes(teamName.toLowerCase())) {
+      return team;
+    }
   }
-  return teams[teamName];
+  return "UNK";
 }
 
 module.exports = getTeamAbbreviation;

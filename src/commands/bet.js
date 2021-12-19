@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { getNextGame } = require("../data/games");
 const { setBet } = require("../data/bets");
 const getGames = require("../functions/get-games");
+const getTeamAbbreviation = require("../functions/get-team-abbreviation");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -31,7 +32,9 @@ module.exports = {
 
     // parse bet -- this could probably be broken out into its own function
     const options = interaction.options._hoistedOptions;
-    const team = options.filter((option) => option.name === "team")[0].value;
+    const team = getTeamAbbreviation(
+      options.filter((option) => option.name === "team")[0].value
+    );
     const amount = options.filter((option) => option.name === "amount")[0]
       .value;
     const user = interaction.user.username;
