@@ -4,19 +4,25 @@ const { oddsApiKey } = require("../config.json");
 const { setGame } = require("../data/games");
 const { isWithinHours } = require("../util/dates");
 
-const getSpread = (markets) => {
+const getSpread = (markets, home, away) => {
   const spreads = markets.filter((market) => market.key === "spreads")[0];
   if (!spreads) {
     return null;
   }
+  const home_odds = spreads.outcomes.filter(
+    (outcome) => outcome.name === home
+  )[0];
+  const away_odds = spreads.outcomes.filter(
+    (outcome) => outcome.name === away
+  )[0];
   return {
     home: {
-      price: spreads.outcomes[1].price,
-      point: spreads.outcomes[1].point,
+      price: home_odds.price,
+      point: home_odds.point,
     },
     away: {
-      price: spreads.outcomes[0].price,
-      point: spreads.outcomes[0].point,
+      price: away_odds.price,
+      point: away_odds.point,
     },
   };
 };
@@ -38,7 +44,11 @@ async function getGames() {
         };
         setGame(newGame); // this is a side effect. side effects are bad.
 
-        const spread = getSpread(dirtyGame.bookmakers[0].markets);
+        const spread = getSpread(
+          dirtyGame.bookmakers[0].markets,
+          dirtyGame.home_team,
+          dirtyGame.away_team
+        );
         if (spread) {
           newGame.odds = {
             spread: spread,

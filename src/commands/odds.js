@@ -20,8 +20,12 @@ module.exports = {
         games.map((game) => {
           reply += `
           ${game.away} @ ${game.home}
-            \t${game.home}: ${game.odds.spread.home.point}
-            \t${game.away}: ${game.odds.spread.away.point}
+            \t${game.home}: ${game.odds.spread.home.point >= 0 ? "+" : ""}${
+            game.odds.spread.home.point
+          }
+            \t${game.away}: ${game.odds.spread.away.point >= 0 ? "+" : ""}${
+            game.odds.spread.away.point
+          }
           `;
         });
       }
