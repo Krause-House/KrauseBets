@@ -39,7 +39,7 @@ client.once("ready", () => {
 
 client.on("messageCreate", (message) => {
   if (proposalChannels.includes(message.channel.id)) {
-    newProposal(client, message);
+    newProposal(message);
   }
 });
 
