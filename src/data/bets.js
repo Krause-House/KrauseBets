@@ -9,10 +9,8 @@ const setBet = async (bet) => {
   });
   try {
     await client.connect();
-    console.log("Successfully connected to MongoDB.");
     const collection = client.db("betting").collection("bets");
     await collection.insertOne(bet);
-    console.log("Successfully inserted bet to MongoDB.");
     client.close();
   } catch (err) {
     console.log(err.stack);

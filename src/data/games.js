@@ -9,7 +9,6 @@ const setGame = async (game) => {
   });
   try {
     await client.connect();
-    console.log("Successfully connected to MongoDB.");
     const collection = client.db("betting").collection("games");
 
     const filter = {
@@ -23,7 +22,6 @@ const setGame = async (game) => {
     };
 
     await collection.updateOne(filter, update, options);
-    console.log("Successfully upserted game to MongoDB.");
   } catch (err) {
     console.log(err.stack);
   } finally {
@@ -39,7 +37,6 @@ const getNextGame = async (team) => {
   });
   try {
     await client.connect();
-    console.log("Successfully connected to MongoDB.");
     const collection = client.db("betting").collection("games");
     const query = {
       $and: [
@@ -66,7 +63,6 @@ const getNextGame = async (team) => {
       sort: { datetime: 1 },
     };
     const game = await collection.findOne(query, options);
-    console.log("Successfully retrieve game from MongoDB.");
     return game;
   } catch (err) {
     console.log(err.stack);

@@ -28,57 +28,62 @@ module.exports = {
         )
     ),
   async execute(interaction) {
-    interaction.deferReply({ ephemeral: true });
+    try {
+      interaction.deferReply({ ephemeral: true });
 
-    // parse bet -- this could probably be broken out into its own function
-    const options = interaction.options._hoistedOptions;
-    const team = getTeamAbbreviation(
-      options.filter((option) => option.name === "team")[0].value
-    );
-    const amount = options.filter((option) => option.name === "amount")[0]
-      .value;
-    const user = interaction.user.username;
+      // parse bet -- this could probably be broken out into its own function
+      const options = interaction.options._hoistedOptions;
+      const team = getTeamAbbreviation(
+        options.filter((option) => option.name === "team")[0].value
+      );
+      const amount = options.filter((option) => option.name === "amount")[0]
+        .value;
+      const user = interaction.user.username;
 
-    const nextGame = await getNextGame(team);
+      const nextGame = await getNextGame(team);
 
-    const game = await getGames().then(
-      (res) => res.filter((game) => game.home === team || game.away === team)[0]
-    );
-    if (!game || !nextGame) {
-      return await interaction.editReply({
-        content: `No games found for ${team}`,
+      const game = await getGames().then(
+        (res) =>
+          res.filter((game) => game.home === team || game.away === team)[0]
+      );
+      if (!game || !nextGame) {
+        return await interaction.editReply({
+          content: `No games found for ${team}`,
+          ephemeral: true,
+        });
+      }
+
+      const bet = {
+        game: nextGame._id,
+        user,
+        team,
+        amount,
+        type: "spread",
+        odds: {
+          point:
+            team === nextGame.home
+              ? game.odds.spread.home.point
+              : game.odds.spread.away.point,
+          price:
+            team === nextGame.home
+              ? game.odds.spread.home.price
+              : game.odds.spread.away.price,
+        },
+      };
+      await setBet(bet);
+
+      await interaction.editReply({
+        content: `Your bet has been placed.`,
         ephemeral: true,
       });
+
+      await interaction.followUp(
+        `${user} has placed a ${amount} spread bet on ${team} (${
+          bet.odds.point >= 0 ? "+" : ""
+        }${bet.odds.point}).`
+      );
+    } catch (error) {
+      console.log(error);
     }
-
-    const bet = {
-      game: nextGame._id,
-      user,
-      team,
-      amount,
-      type: "spread",
-      odds: {
-        point:
-          team === nextGame.home
-            ? game.odds.spread.home.point
-            : game.odds.spread.away.point,
-        price:
-          team === nextGame.home
-            ? game.odds.spread.home.price
-            : game.odds.spread.away.price,
-      },
-    };
-    await setBet(bet);
-
-    await interaction.editReply({
-      content: `Your bet has been placed.`,
-      ephemeral: true,
-    });
-
-    await interaction.followUp(
-      `${user} has placed a ${amount} spread bet on ${team} (${
-        bet.odds.point >= 0 ? "+" : ""
-      }${bet.odds.point}).`
-    );
   },
 };
