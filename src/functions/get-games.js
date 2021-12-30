@@ -7,10 +7,11 @@ const getGames = async () => {
     .then((response) => {
       const todaysGames = response.data.league.standard.filter((game) => {
         const startTime = new Date(game.startTimeUTC);
-        const now = new Date();
+        const pastCutoff = new Date();
+        pastCutoff.setHours(pastCutoff.getHours() - 72); // get past games to update scores
         const cutoff = new Date();
         cutoff.setHours(cutoff.getHours() + 16);
-        return startTime < cutoff && startTime > now;
+        return startTime < cutoff && startTime > pastCutoff;
       });
       todaysGames.map(async (game) => {
         addGame(game);

@@ -64,4 +64,4 @@ const getNextGame = async (team) => {
   }
 };
 
-module.exports = { setGame, addGame, getNextGame };
+module.exports = { addGame, getNextGame };
