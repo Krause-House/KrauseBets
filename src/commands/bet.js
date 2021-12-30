@@ -70,6 +70,10 @@ module.exports = {
               : game.odds.spread.away.price,
         },
       };
+
+      // can be broken out into a better "bet" object
+      const opposing_team = game.home === team ? game.away : game.home;
+
       await setBet(bet);
 
       await interaction.editReply({
@@ -80,7 +84,7 @@ module.exports = {
       await interaction.followUp(
         `${user} has placed a ${amount} spread bet on ${team} (${
           bet.odds.point >= 0 ? "+" : ""
-        }${bet.odds.point}).`
+        }${bet.odds.point}) over ${opposing_team}.`
       );
     } catch (error) {
       console.log(error);
