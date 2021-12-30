@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
 const { mongoConnectionString } = require("../config.json");
 
-const setGame = async (game) => {
+const addGame = async (game) => {
   const uri = mongoConnectionString;
   const client = new MongoClient(uri, {
     useNewUrlParser: true,
@@ -12,9 +12,7 @@ const setGame = async (game) => {
     const collection = client.db("betting").collection("games");
 
     const filter = {
-      home: game.home,
-      away: game.away,
-      datetime: game.datetime,
+      gameUrlCode: game.gameUrlCode,
     }; // won't insert if already exists
     const options = { upsert: true };
     const update = {
@@ -41,19 +39,14 @@ const getNextGame = async (team) => {
     const query = {
       $and: [
         {
-          $or: [
-            {
-              home: team,
-            },
-            {
-              away: team,
-            },
-          ],
+          gameUrlCode: {
+            $regex: team,
+          },
         },
         {
-          datetime: {
+          startTimeUTC: {
             // TO DO: only show games happening TONIGHT
-            $gte: new Date(), // only show games that have not yet started
+            $gte: new Date().toISOString(), // only show games that have not yet started
           },
         },
       ],
@@ -63,6 +56,7 @@ const getNextGame = async (team) => {
       sort: { datetime: 1 },
     };
     const game = await collection.findOne(query, options);
+    console.log(game);
     return game;
   } catch (err) {
     console.log(err.stack);
@@ -71,4 +65,4 @@ const getNextGame = async (team) => {
   }
 };
 
-module.exports = { setGame, getNextGame };
+module.exports = { setGame, addGame, getNextGame };

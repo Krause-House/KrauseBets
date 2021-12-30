@@ -12,8 +12,8 @@ const addTeam = async (team) => {
     const collection = client.db("betting").collection("teams");
 
     const filter = {
-      _id: team.teamId,
-    }; // won't insert if already exists
+      teamId: team.teamId,
+    };
     const options = { upsert: true };
     const update = {
       $set: team,

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { getNextGame } = require("../data/games");
 const { setBet } = require("../data/bets");
-const getGames = require("../functions/get-games");
+const getGameOdds = require("../functions/get-game-odds");
 const getTeamAbbreviation = require("../functions/get-team-abbreviation");
 
 module.exports = {
@@ -42,7 +42,7 @@ module.exports = {
 
       const nextGame = await getNextGame(team);
 
-      const game = await getGames().then(
+      const game = await getGameOdds().then(
         (res) =>
           res.filter((game) => game.home === team || game.away === team)[0]
       );

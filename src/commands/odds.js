@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const getGames = require("../functions/get-games");
+const getGameOdds = require("../functions/get-game-odds");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,7 +13,7 @@ module.exports = {
   async execute(interaction) {
     try {
       await interaction.deferReply({ ephemeral: true });
-      getGames().then(async (games) => {
+      getGameOdds().then(async (games) => {
         var reply = "**Tonight's Spread Odds**\n";
         if (games.length == 0) {
           reply = "No upcoming games for tonight found.";
