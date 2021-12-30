@@ -56,7 +56,6 @@ const getNextGame = async (team) => {
       sort: { datetime: 1 },
     };
     const game = await collection.findOne(query, options);
-    console.log(game);
     return game;
   } catch (err) {
     console.log(err.stack);
