@@ -43,6 +43,7 @@ const getTeam = async (teamId) => {
     return team;
   } catch (err) {
     console.log(err.stack);
+    return null;
   } finally {
     client.close();
   }

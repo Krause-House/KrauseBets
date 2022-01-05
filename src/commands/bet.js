@@ -42,8 +42,8 @@ module.exports = {
       const user = interaction.user.username;
 
       const nextGame = await getNextGame(team);
-      const homeTeam = await getTeam(nextGame.hTeam.teamId);
-      const awayTeam = await getTeam(nextGame.vTeam.teamId);
+      const homeTeam = await getTeam(nextGame?.hTeam?.teamId);
+      const awayTeam = await getTeam(nextGame?.vTeam?.teamId);
 
       const game = await getGameOdds().then(
         (res) =>
@@ -64,11 +64,11 @@ module.exports = {
         type: "spread",
         odds: {
           point:
-            team === homeTeam.tricode
+            team === homeTeam?.tricode
               ? game.odds.spread.home.point
               : game.odds.spread.away.point,
           price:
-            team === awayTeam.tricode
+            team === awayTeam?.tricode
               ? game.odds.spread.home.price
               : game.odds.spread.away.price,
         },
