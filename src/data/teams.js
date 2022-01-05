@@ -27,4 +27,25 @@ const addTeam = async (team) => {
   }
 };
 
-module.exports = { addTeam };
+const getTeam = async (teamId) => {
+  const uri = mongoConnectionString;
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  try {
+    await client.connect();
+    const collection = client.db("betting").collection("teams");
+    const query = {
+      teamId: teamId,
+    };
+    const team = await collection.findOne(query);
+    return team;
+  } catch (err) {
+    console.log(err.stack);
+  } finally {
+    client.close();
+  }
+};
+
+module.exports = { addTeam, getTeam };
