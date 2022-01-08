@@ -38,19 +38,23 @@ client.once("ready", () => {
 });
 
 client.on("messageCreate", (message) => {
-  if (proposalChannels.includes(message.channel.id)) {
-    newProposal(message);
+  try {
+    if (proposalChannels.includes(message.channel.id)) {
+      newProposal(message);
+    }
+  } catch (error) {
+    console.error(error);
   }
 });
 
 client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-
-  if (!command) return;
-
   try {
+    if (!interaction.isCommand()) return;
+
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) return;
+
     await command.execute(interaction);
   } catch (error) {
     console.error(error);
