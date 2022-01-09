@@ -30,6 +30,7 @@ module.exports = {
     ),
   async execute(interaction) {
     try {
+      console.log("Received bet, deferring reply.");
       interaction.deferReply({ ephemeral: true });
 
       // parse bet -- this could probably be broken out into its own function
@@ -79,16 +80,21 @@ module.exports = {
 
       await setBet(bet);
 
+      console.log("Bet has been placed.");
       await interaction.editReply({
         content: `Your bet has been placed.`,
         ephemeral: true,
       });
+      console.log("Message edited.");
 
       await interaction.followUp(
         `${user} has placed a ${amount} spread bet on ${team} (${
           bet.odds.point >= 0 ? "+" : ""
         }${bet.odds.point}) over ${opposing_team}.`
       );
+      console.log("Public message has been sent.");
+
+      console.log("Interaction ended ---------------------------");
     } catch (error) {
       console.log(error);
     }

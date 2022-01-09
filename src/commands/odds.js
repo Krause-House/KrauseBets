@@ -12,6 +12,7 @@ module.exports = {
     ),
   async execute(interaction) {
     try {
+      console.log("Odds requested, deferring reply");
       await interaction.deferReply({ ephemeral: true });
       getGameOdds().then(async (games) => {
         var reply = "**Tonight's Spread Odds**\n";
@@ -30,10 +31,15 @@ module.exports = {
             `;
           });
         }
+
+        console.log("Odds received, editing reply");
         await interaction.editReply({
           content: reply,
           ephemeral: true,
         });
+        console.log("Reply edited");
+
+        console.log("Interaction ended ----------------------------");
       });
     } catch (error) {
       console.log(error);
