@@ -31,7 +31,6 @@ module.exports = {
   async execute(interaction) {
     try {
       console.log("Received bet, deferring reply.");
-      interaction.deferReply({ ephemeral: true });
 
       // parse bet -- this could probably be broken out into its own function
       const options = interaction.options._hoistedOptions;
@@ -40,6 +39,17 @@ module.exports = {
       );
       const amount = options.filter((option) => option.name === "amount")[0]
         .value;
+
+      if (amount < 0) {
+        await interaction.reply({
+          content: `Bet must be greater than 0.`,
+          ephemeral: true,
+        });
+        return;
+      } else {
+        interaction.deferReply({ ephemeral: true });
+      }
+
       const user = interaction.user.username;
 
       const nextGame = await getNextGame(team);
