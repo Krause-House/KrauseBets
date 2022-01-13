@@ -1,7 +1,6 @@
 const oddsApi = require("./odds-api");
 const getTeamAbbreviation = require("./get-team-abbreviation");
 const { oddsApiKey } = require("../config.json");
-const getGames = require("./get-games");
 const { isWithinHours } = require("../util/dates");
 
 const getSpread = (markets, home, away) => {
