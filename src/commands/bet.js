@@ -50,7 +50,7 @@ module.exports = {
         interaction.deferReply({ ephemeral: true });
       }
 
-      const user = interaction.user.username;
+      const user = interaction.user.id;
 
       const nextGame = await getNextGame(team);
       const homeTeam = await getTeam(nextGame?.hTeam?.teamId);
