@@ -50,7 +50,7 @@ module.exports = {
         interaction.deferReply({ ephemeral: true });
       }
 
-      const userId = interaction.user.id;
+      const user = interaction.user;
 
       const nextGame = await getNextGame(team);
       const homeTeam = await getTeam(nextGame?.hTeam?.teamId);
@@ -69,7 +69,7 @@ module.exports = {
 
       const bet = {
         game: nextGame._id,
-        userId,
+        user.id,
         team,
         amount,
         type: "spread",
@@ -98,7 +98,7 @@ module.exports = {
       console.log("Message edited.");
 
       await interaction.followUp(
-        `${user} has placed a ${amount} spread bet on ${team} (${
+        `${user.username} has placed a ${amount} spread bet on ${team} (${
           bet.odds.point >= 0 ? "+" : ""
         }${bet.odds.point}) over ${opposing_team}.`
       );
