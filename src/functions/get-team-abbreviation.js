@@ -5,7 +5,7 @@ const teams = {
   CHA: ["charlotte hornets", "hornets", "cha", "charlotte"],
   CHI: ["chicago bulls", "bulls", "chi", "chicago"],
   CLE: ["cleveland cavaliers", "cavaliers", "cle", "cleveland", "cavs"],
-  DAL: ["dallas mavericks", "mavericks", "dallas", "dallas mavs", "mavs"],
+  DAL: ["dallas mavericks", "mavericks", "dallas", "dallas mavs", "mavs", "dal"],
   DEN: ["denver nuggets", "nuggets", "den", "denver", "nugs"],
   DET: ["detroit pistons", "pistons", "det", "detroit"],
   GSW: ["golden state warriors", "warriors", "gsw", "golden state", "warrior"],

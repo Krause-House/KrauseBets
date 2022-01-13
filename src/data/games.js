@@ -1,32 +1,6 @@
 const { MongoClient } = require("mongodb");
 const { mongoConnectionString } = require("../config.json");
 
-const addGame = async (game) => {
-  const uri = mongoConnectionString;
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  try {
-    await client.connect();
-    const collection = client.db("betting").collection("games");
-
-    const filter = {
-      gameUrlCode: game.gameUrlCode,
-    }; // won't insert if already exists
-    const options = { upsert: true };
-    const update = {
-      $set: game,
-    };
-
-    await collection.updateOne(filter, update, options);
-  } catch (err) {
-    console.log(err.stack);
-  } finally {
-    client.close();
-  }
-};
-
 const getNextGame = async (team) => {
   const uri = mongoConnectionString;
   const client = new MongoClient(uri, {
@@ -64,4 +38,4 @@ const getNextGame = async (team) => {
   }
 };
 
-module.exports = { addGame, getNextGame };
+module.exports = { getNextGame };

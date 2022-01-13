@@ -31,7 +31,6 @@ async function getGameOdds() {
   var games = [];
   const response = await oddsApi(oddsApiKey);
   try {
-    await getGames(); // this is a side effect. side effects are bad.
     await await Promise.all(
       response.map(async (dirtyGame) => {
         if (!isWithinHours(new Date(dirtyGame.commence_time), 12)) {
