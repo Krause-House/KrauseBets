@@ -50,7 +50,7 @@ module.exports = {
         interaction.deferReply({ ephemeral: true });
       }
 
-      const user = interaction.user.id;
+      const userId = interaction.user.id;
 
       const nextGame = await getNextGame(team);
       const homeTeam = await getTeam(nextGame?.hTeam?.teamId);
@@ -69,7 +69,7 @@ module.exports = {
 
       const bet = {
         game: nextGame._id,
-        user,
+        userId,
         team,
         amount,
         type: "spread",
