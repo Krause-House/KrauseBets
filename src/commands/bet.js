@@ -69,7 +69,7 @@ module.exports = {
 
       const bet = {
         game: nextGame._id,
-        user.id,
+        user: user.id,
         team,
         amount,
         type: "spread",
