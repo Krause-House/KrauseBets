@@ -4,6 +4,9 @@ const { setBet } = require("../data/bets");
 const getGameOdds = require("../functions/get-game-odds");
 const getTeamAbbreviation = require("../functions/get-team-abbreviation");
 const { getTeam } = require("../data/teams");
+const { initUser, getUser, setBalance } = require("../data/user");
+const { MongoClient } = require("mongodb");
+const { mongoConnectionString } = require("../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -29,8 +32,15 @@ module.exports = {
         )
     ),
   async execute(interaction) {
+    const uri = mongoConnectionString;
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       console.log("Received bet, deferring reply.");
+
+      await client.connect();
 
       // parse bet -- this could probably be broken out into its own function
       const options = interaction.options._hoistedOptions;
@@ -47,10 +57,23 @@ module.exports = {
         });
         return;
       } else {
-        interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true });
       }
 
-      const user = interaction.user;
+      const discordUser = interaction.user;
+      let user = await getUser(client, discordUser.id);
+      if (!user) {
+        await initUser(client, discordUser);
+        user = await getUser(client, discordUser.id);
+      }
+
+      if (user.balance < amount) {
+        await interaction.editReply({
+          content: `Insufficient balance! You have ${user.balance} remaining.`,
+          ephemeral: true,
+        });
+        return;
+      }
 
       const nextGame = await getNextGame(team);
       const homeTeam = await getTeam(nextGame?.hTeam?.teamId);
@@ -69,7 +92,7 @@ module.exports = {
 
       const bet = {
         game: nextGame._id,
-        user: user.id,
+        user: user.discordId,
         team,
         amount,
         type: "spread",
@@ -88,7 +111,9 @@ module.exports = {
       // can be broken out into a better "bet" object
       const opposing_team = game.home === team ? game.away : game.home;
 
-      await setBet(bet);
+      await setBet(client, bet);
+
+      await setBalance(client, user.discordId, user.balance - amount);
 
       console.log("Bet has been placed.");
       await interaction.editReply({
@@ -98,7 +123,9 @@ module.exports = {
       console.log("Message edited.");
 
       await interaction.followUp(
-        `${user.username} has placed a ${amount} spread bet on ${team} (${
+        `${
+          discordUser.username
+        } has placed a ${amount} spread bet on ${team} (${
           bet.odds.point >= 0 ? "+" : ""
         }${bet.odds.point}) over ${opposing_team}.`
       );
@@ -107,6 +134,14 @@ module.exports = {
       console.log("Interaction ended ---------------------------");
     } catch (error) {
       console.log(error);
+      await interaction.editReply({
+        content: `Failed to place bet.`,
+        ephemeral: true,
+      });
+    } finally {
+      if (client) {
+        client.close();
+      }
     }
   },
 };

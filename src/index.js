@@ -37,16 +37,6 @@ client.once("ready", () => {
   console.log("Ready!");
 });
 
-client.on("messageCreate", (message) => {
-  try {
-    if (proposalChannels.includes(message.channel.id)) {
-      newProposal(message);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-});
-
 client.on("interactionCreate", async (interaction) => {
   try {
     if (!interaction.isCommand()) return;
