@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const { mongoConnectionString } = require("../config.json");
+const { mongoConnectionString } = process.env;
 
 const addTeam = async (team) => {
   const uri = mongoConnectionString;

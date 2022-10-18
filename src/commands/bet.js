@@ -6,7 +6,7 @@ const getTeamAbbreviation = require("../functions/get-team-abbreviation");
 const { getTeam } = require("../data/teams");
 const { initUser, getUser, setBalance } = require("../data/user");
 const { MongoClient } = require("mongodb");
-const { mongoConnectionString } = require("../config.json");
+const { mongoConnectionString } = process.env;
 
 module.exports = {
   data: new SlashCommandBuilder()
