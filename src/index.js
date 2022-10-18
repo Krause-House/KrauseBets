@@ -2,7 +2,7 @@ const fs = require("fs");
 const http = require("http");
 const { Client, Collection, Intents } = require("discord.js");
 const newProposal = require("./actions/new-proposal");
-const { token, port, host, proposalChannels } = require("./config.json");
+const { token, port, host, proposalChannels } = process.env;
 
 const requestListener = function (req, res) {
   res.writeHead(200);
